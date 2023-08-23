@@ -1,0 +1,39 @@
+:root {
+  @apply bg-black color-white font-sans1;
+}
+
+::selection {
+  @apply bg-white text-black;
+}
+
+body {
+  @apply m-0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-(sans-1 bold);
+}
+
+h1 {
+  @apply text-4xl;
+}
+
+textarea {
+  @apply font-mono resize-none;
+  --at-apply: 'placeholder:color-gray-500';
+}
+
+button,
+textarea {
+  @apply p-2 color-gray-400 border-line bg-transparent transition-colors;
+  --at-apply: 'outline-none! focus:color-white';
+}
+
+button:hover {
+  @apply color-white;
+}

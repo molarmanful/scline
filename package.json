@@ -1,0 +1,41 @@
+{
+  "name": "scline",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@grail-ui/svelte": "^0.10.1",
+    "@iconify-json/ic": "^1.1.14",
+    "@sveltejs/adapter-node": "^1.3.1",
+    "@sveltejs/kit": "^1.23.0",
+    "@unocss/extractor-svelte": "^0.53.6",
+    "@unocss/reset": "^0.53.6",
+    "fflate": "^0.8.0",
+    "postcss": "^8.4.28",
+    "postcss-nesting": "^12.0.1",
+    "svelte": "^4.2.0",
+    "unocss": "^0.55.2",
+    "vite": "^4.4.9"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
+    "eslint": "^8.47.0",
+    "eslint-config-prettier": "^8.10.0",
+    "eslint-import-resolver-custom-alias": "^1.3.2",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-svelte": "^2.33.0",
+    "globals": "^13.21.0",
+    "prettier": "^3.0.2",
+    "prettier-plugin-svelte": "^3.0.3",
+    "stylelint": "^15.10.3",
+    "stylelint-config-recommended": "^13.0.0"
+  }
+}
