@@ -1,33 +1,23 @@
 import * as ffl from 'fflate'
+import { decode, encode } from 'uint8-to-base64'
 
-import { browser } from '$app/environment'
-
-let toB64 = x => btoa(x).replace(/\+/g, '@').replace(/=+/, '')
-let fromB64 = x => atob(x.replace(/@|-/g, '+').replace(/_/g, '/'))
-
-export const compress = (a, f = () => {}) => {
-  ffl.compress(ffl.strToU8(a), { level: 9, mem: 12 }, (err, data) => {
-    if (err) {
-      console.error(err)
-      f('')
-      return
-    }
-    if (browser) f('##' + toB64(ffl.strFromU8(data, true)))
-  })
-}
-
-export const decompress = (a, f = () => {}) => {
-  try {
-    ffl.decompress(ffl.strToU8(fromB64(a.slice(2)), true), {}, (err, data) => {
-      if (err) {
-        console.error(err)
-        f('')
-        return
-      }
-      if (browser) f(ffl.strFromU8(data))
+let promisify =
+  f =>
+  (...args) =>
+    new Promise((resolve, reject) => {
+      f(...args, (err, res) => (err ? reject(err) : resolve(res)))
     })
-  } catch (err) {
-    console.error(err)
-    f('')
-  }
-}
+
+let fpcomp = promisify(ffl.compress)
+let fpdecomp = promisify(ffl.decompress)
+
+export const toB64 = x =>
+  encode(x).replace(/\+/g, '.').replace(/\//g, '_').replace(/=+/, '')
+
+export const fromB64 = x => decode(x.replace(/\./g, '+').replace(/_/g, '/'))
+
+export const compress = async a =>
+  toB64(await fpcomp(ffl.strToU8(a), { level: 9, mem: 12 }))
+
+export const decompress = async a =>
+  ffl.strFromU8(await fpdecomp(fromB64(a), {}))

@@ -36,6 +36,7 @@ export default {
     ['screen', 'w-screen h-screen'],
     ['max-full', 'max-w-full max-h-full'],
     ['max-screen', 'max-w-screen max-h-screen'],
+    ['corn', 'absolute bottom-1 right-1 p-1 text-sm text-gray-400 bg-black/69'],
   ],
   extractors: [extractorSvelte],
 }

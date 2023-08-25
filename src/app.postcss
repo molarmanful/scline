@@ -23,13 +23,19 @@ h1 {
   @apply text-4xl;
 }
 
-textarea {
+textarea,
+pre {
   @apply font-mono resize-none;
   --at-apply: 'placeholder:color-gray-500';
 }
 
+pre {
+  @apply overflow-auto;
+}
+
 button,
-textarea {
+textarea,
+pre {
   @apply p-2 color-gray-400 border-line bg-transparent transition-colors;
   --at-apply: 'outline-none! focus:color-white';
 }
