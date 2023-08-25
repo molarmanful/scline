@@ -17,7 +17,7 @@ export const GET = async ({ params: { code } }) => {
   await writeFile(path, await decompress(code))
 
   let std = new PassThrough()
-  let run = spawn('sclin', ['-i', path])
+  let run = spawn('sclin', [path])
   run.stdout.pipe(std)
   run.stderr.pipe(std)
   run.on('close', async () => {
