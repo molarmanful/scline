@@ -56,7 +56,7 @@ ppcg.se:
 ${code}
 \`\`\`
 
-[Try it here!](${href})`
+[Try it on scline!](${href})`
   }
 
   onMount(async () => {
