@@ -16,38 +16,43 @@
 
   let out = ''
   $: if (out.length > 128000)
-    out = '[scline] output truncated\n...' + out.slice(-64000)
+    out = '[scline: stdout truncated]\n...' + out.slice(-64000)
 
   let state = 'out'
   $: code, (state = 'out')
 
   let src
-  $: stop = (m = 'end') => {
+  let force = false
+  $: stop = () => {
     if (src) {
       src.close()
-      requestAnimationFrame(() => {
-        out += '\n>==\n[scline] ' + m
-      })
       src = false
     }
   }
 
   let run = async () => {
     state = 'out'
-    out = '[scline] running...\n'
+    out = ''
 
-    src = source('/run/' + (await compress(code)))
+    let cc = await compress(code)
+    src = source('/run/' + cc)
     src
       .onError(() => {
         stop()
       })
       .transform(async stream => {
         for await (let e of stream) {
-          if (!src) break
-
+          if (force) {
+            force = false
+            break
+          }
           let [x, m] = JSON.parse(e)
-          if (x < 0) stop()
-          else out += await decompress(m)
+          if (x < 0) {
+            stop()
+            break
+          }
+          let o = await decompress(m)
+          out += o
         }
       })
   }
@@ -79,7 +84,7 @@
     <Brand />
     <div class="flex gap-4 mb-4">
       {#if src}
-        <Button on:click={stop('stopped')}>
+        <Button on:click={((force = true), stop())}>
           <i class="i-ic-outline-stop"></i> stop
         </Button>
       {:else}

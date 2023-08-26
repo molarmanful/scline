@@ -1,7 +1,6 @@
 import { spawn } from 'child_process'
 import { PassThrough } from 'stream'
 
-import stripAnsi from 'strip-ansi'
 import { event } from 'sveltekit-sse'
 
 import { compress, decompress } from '$lib/ffl'
@@ -11,22 +10,27 @@ let CLOSE = MSG(-1, 0)
 let delay = ms => new Promise(r => setTimeout(r, ms))
 
 export const GET = async ({ params: { code } }) => {
+  code = await decompress(code)
+  console.log('recv:', code)
   let std = new PassThrough()
-  let run = spawn('sclin', ['-i', '-e', await decompress(code)])
+  let run = spawn('sclin', ['--nocolor', '-i', '-e', code])
   run.stdout.pipe(std)
   run.stderr.pipe(std)
 
   return event(async emit => {
     let n = 0
-    let ec = async m => emit(MSG(n++, await compress(m)))
+    let ec = async m => {
+      m = await compress(m)
+      await emit(MSG(n++, m))
+    }
 
-    await ec('==>\n')
+    await ec('[scline: running...]\n===>\n\n')
     for await (let data of std) {
-      data = stripAnsi(data + '')
-      await ec(data)
+      await ec(data + '')
       n %= 9
     }
-    emit(CLOSE)
+    await ec('\n>===\n[scline: end]')
+    await emit(CLOSE)
   })
     .onCancel(() => {
       run.kill()
