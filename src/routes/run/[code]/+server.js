@@ -18,14 +18,10 @@ export const GET = async ({ params: { code } }) => {
 
   return event(async emit => {
     let n = 0
-    let fresh = true
     let ec = async m => emit(MSG(n++, await compress(m)))
 
+    await ec('==>\n')
     for await (let data of std) {
-      if (fresh) {
-        await ec('==>\n\n')
-        fresh = false
-      }
       data = stripAnsi(data + '')
       await ec(data)
       n %= 9
