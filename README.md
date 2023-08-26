@@ -1,3 +1,3 @@
-# try it on scline
+# try it on scline!
 
 WIP

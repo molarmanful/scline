@@ -35,6 +35,11 @@
       })
       .transform(async stream => {
         for await (let e of stream) {
+          if (!src) {
+            out += '>==\n[scline] stopped'
+            break
+          }
+
           let [x, m] = JSON.parse(e)
           if (x < 0) stop()
           else out += await decompress(m)
