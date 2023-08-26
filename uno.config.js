@@ -31,7 +31,7 @@ export default {
   theme: {},
   rules: [],
   shortcuts: [
-    ['border-line', 'border-(1 solid current)'],
+    ['b-line', 'b-(1 solid current)'],
     ['full', 'w-full h-full'],
     ['screen', 'w-screen h-screen'],
     ['max-full', 'max-w-full max-h-full'],

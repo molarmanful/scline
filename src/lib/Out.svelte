@@ -17,6 +17,6 @@
   disabled
   placeholder="output..."
   spellcheck="false"
-  bind:value
+  {value}
   {...$$restProps}
 ></textarea>

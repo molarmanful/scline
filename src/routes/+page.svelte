@@ -8,10 +8,13 @@
   import Code from '$lib/Code.svelte'
   import { compress, decompress } from '$lib/ffl'
   import Out from '$lib/Out.svelte'
+  import Perma from '$lib/Perma.svelte'
 
+  let href = ''
   let code = ''
   let bytes = 0
   let out = ''
+  let state = 'out'
 
   let src
   $: stop = () => {
@@ -22,6 +25,7 @@
   }
 
   let run = async () => {
+    state = 'out'
     out = '[scline] running...\n\n'
 
     src = source('/run/' + (await compress(code)))
@@ -45,19 +49,16 @@
 
   let permalink = async () => {
     history.pushState({}, '', `##${await compress(code)}`)
-    let { href } = location
-    out = `url: ${href}
-
-ppcg.se:
-
-# [sclin](https://github.com/molarmanful/sclin), ${bytes} bytes
-
-\`\`\`
-${code}
-\`\`\`
-
-[Try it on scline!](${href})`
+    href = location.href
+    state = 'perma'
   }
+
+  $: code, (state = 'out')
+
+  createKeyStroke({
+    key: ['ctrl+s'],
+    handler: permalink,
+  })
 
   onMount(async () => {
     let { hash } = location
@@ -85,7 +86,11 @@ ${code}
   </header>
   <main class="min-h-0 flex-(~ 1) lt-lg:flex-col gap-4">
     <Code bind:value={code} bind:bytes />
-    <Out bind:value={out} />
+    {#if state == 'perma'}
+      <Perma {bytes} {code} {href} />
+    {:else}
+      <Out value={out} />
+    {/if}
   </main>
 </div>
 

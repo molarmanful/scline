@@ -23,23 +23,24 @@ h1 {
   @apply text-4xl;
 }
 
+button:not([reset]),
 textarea,
 pre {
-  @apply font-mono resize-none;
+  @apply color-gray-400 b-line bg-transparent transition-colors;
+  --at-apply: 'outline-none! focus:text-white';
+}
+
+button:not([reset]) {
+  @apply p-2;
+  --at-apply: 'hover:text-white';
+}
+
+textarea,
+pre {
+  @apply p-4 font-mono resize-none;
   --at-apply: 'placeholder:color-gray-500';
 }
 
 pre {
   @apply overflow-auto;
-}
-
-button,
-textarea,
-pre {
-  @apply p-2 color-gray-400 border-line bg-transparent transition-colors;
-  --at-apply: 'outline-none! focus:color-white';
-}
-
-button:hover {
-  @apply color-white;
 }
