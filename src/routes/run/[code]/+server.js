@@ -12,7 +12,7 @@ let delay = ms => new Promise(r => setTimeout(r, ms))
 
 export const GET = async ({ params: { code } }) => {
   let std = new PassThrough()
-  let run = spawn('sclin', ['-e', await decompress(code)])
+  let run = spawn('sclin', ['-i', '-e', await decompress(code)])
   run.stdout.pipe(std)
   run.stderr.pipe(std)
 
