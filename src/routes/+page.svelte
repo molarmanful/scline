@@ -26,7 +26,7 @@
 
   let run = async () => {
     state = 'out'
-    out = '[scline] running...\n\n'
+    out = '[scline] running...\n'
 
     src = source('/run/' + (await compress(code)))
     src
