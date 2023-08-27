@@ -30,7 +30,7 @@ export const GET = async ({ params: { code } }) => {
       await ec(data + '')
       n %= 9
       if (len > 128000) {
-        await ec('\n...\n[scline: output truncated]')
+        await ec('...\n[scline: output truncated]')
         break
       }
     }
