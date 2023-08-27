@@ -11,7 +11,6 @@ let delay = ms => new Promise(r => setTimeout(r, ms))
 
 export const GET = async ({ params: { code } }) => {
   code = await decompress(code)
-  console.log('recv:', code)
   let std = new PassThrough()
   let run = spawn('sclin', ['--nocolor', '-i', '-e', code])
   run.stdout.pipe(std)
@@ -26,7 +25,6 @@ export const GET = async ({ params: { code } }) => {
 
     await ec('[scline: running...]\n===>\n\n')
     for await (let data of std) {
-      console.log('send: ', data + '')
       await ec(data + '')
       n %= 9
     }
