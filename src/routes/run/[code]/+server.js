@@ -26,6 +26,7 @@ export const GET = async ({ params: { code } }) => {
 
     await ec('[scline: running...]\n===>\n\n')
     for await (let data of std) {
+      console.log('send: ', data + '')
       await ec(data + '')
       n %= 9
     }
