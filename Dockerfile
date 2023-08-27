@@ -20,6 +20,8 @@ COPY --from=pre /root/.volta /root/.volta
 COPY --from=pre /app /app
 
 WORKDIR /app
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
 ENV NODE_ENV production
 ENV PATH $PATH:/opt/java/openjdk/bin:/scbin:/root/.volta/bin
 CMD ["pnpm", "start"]
