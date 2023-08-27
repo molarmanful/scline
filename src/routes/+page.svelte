@@ -15,8 +15,6 @@
   let bytes = 0
 
   let out = ''
-  $: if (out.length > 128000)
-    out = '[scline: stdout truncated]\n...' + out.slice(-64000)
 
   let state = 'out'
   $: code, (state = 'out')

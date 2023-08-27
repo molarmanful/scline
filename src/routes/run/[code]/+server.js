@@ -24,7 +24,13 @@ export const GET = async ({ params: { code } }) => {
     }
 
     await ec('[scline: running...]\n===>\n\n')
+    let len = 0
     for await (let data of std) {
+      len += data.length
+      if (len > 128000) {
+        await ec('\n...\n[scline: output truncated]')
+        break
+      }
       await ec(data + '')
       n %= 9
     }
