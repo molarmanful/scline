@@ -9,6 +9,8 @@ let MSG = (x, m) => JSON.stringify([x, m])
 let CLOSE = MSG(-1, 0)
 let delay = ms => new Promise(r => setTimeout(r, ms))
 
+let MAX_LEN = 128000
+
 export const GET = async ({ params: { code } }) => {
   code = await decompress(code)
   let std = new PassThrough()
@@ -25,14 +27,18 @@ export const GET = async ({ params: { code } }) => {
 
     await ec('[scline: running...]\n===>\n\n')
     let len = 0
+    let plen = 0
     for await (let data of std) {
+      plen = len
       len += data.length
-      await ec(data + '')
-      n %= 9
-      if (len > 128000) {
-        await ec('...\n[scline: output truncated]')
+      if (len >= MAX_LEN) {
+        await ec(
+          data.slice(0, MAX_LEN - plen) + '...\n[scline: output truncated]'
+        )
         break
       }
+      await ec(data + '')
+      n %= 9
     }
     await ec('\n>===\n[scline: end]')
     await emit(CLOSE)

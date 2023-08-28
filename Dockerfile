@@ -22,6 +22,7 @@ COPY --from=pre /app /app
 WORKDIR /app
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
-ENV NODE_ENV production
 ENV PATH $PATH:/opt/java/openjdk/bin:/scbin:/root/.volta/bin
+ENV NODE_ENV production
+ENV BODY_SIZE_LIMIT 128000
 CMD ["pnpm", "start"]
