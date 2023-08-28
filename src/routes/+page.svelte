@@ -30,7 +30,7 @@
 
   let run = async () => {
     state = 'out'
-    out = '[sclin: loading...]'
+    out = '[scline: loading...]'
 
     let cc = await compress(code)
     src = source('/run/' + cc)
