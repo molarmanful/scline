@@ -39,8 +39,12 @@
         stop()
       })
       .transform(async stream => {
-        out = ''
+        let fst = true
         for await (let e of stream) {
+          if (fst) {
+            out = ''
+            fst = false
+          }
           if (force) {
             force = false
             break
