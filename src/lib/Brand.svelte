@@ -2,7 +2,7 @@
 
 <style lang="postcss">
   h1 {
-    @apply inline-block mb-4;
+    @apply inline-block;
 
     span {
       @apply transition-color-400;

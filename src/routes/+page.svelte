@@ -3,6 +3,7 @@
   import { onMount } from 'svelte'
   import { source } from 'sveltekit-sse'
 
+  import About from '$lib/About.svelte'
   import Brand from '$lib/Brand.svelte'
   import Button from '$lib/Button.svelte'
   import Code from '$lib/Code.svelte'
@@ -76,6 +77,10 @@
     handler: permalink,
   })
 
+  let abt = () => {
+    state = 'abt'
+  }
+
   onMount(async () => {
     let { hash } = location
     if (hash.startsWith('##')) code = await decompress(hash.slice(2))
@@ -98,12 +103,17 @@
       <Button on:click={permalink}>
         <i class="i-ic-outline-link"></i> link
       </Button>
+      <Button on:click={abt}>
+        <i class="i-ic-outline-info"></i> about
+      </Button>
     </div>
   </header>
   <main class="min-h-0 flex-(~ 1) lt-lg:flex-col gap-4">
     <Code bind:value={code} bind:bytes />
     {#if state == 'perma'}
       <Perma {bytes} {code} {href} />
+    {:else if state == 'abt'}
+      <About />
     {:else}
       <Out value={out} />
     {/if}
