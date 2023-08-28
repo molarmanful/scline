@@ -30,7 +30,7 @@
 
   let run = async () => {
     state = 'out'
-    out = ''
+    out = '[sclin: loading...]'
 
     let cc = await compress(code)
     src = source('/run/' + cc)
@@ -39,6 +39,7 @@
         stop()
       })
       .transform(async stream => {
+        out = ''
         for await (let e of stream) {
           if (force) {
             force = false
