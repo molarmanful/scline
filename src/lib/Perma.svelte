@@ -17,7 +17,7 @@
 <div panel {...$$restProps}>
   <h2>url</h2>
   <p><button reset on:click={copy}><pre>{href}</pre></button></p>
-
+  <br />
   <h2>golf</h2>
   <p>
     <button reset on:click={copy}>
