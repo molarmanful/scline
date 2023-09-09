@@ -16,11 +16,11 @@
 
 <div panel {...$$restProps}>
   <h2>url</h2>
-  <p><button reset on:click={copy}><pre>{href}</pre></button></p>
+  <p><button reset on:click|preventDefault={copy}><pre>{href}</pre></button></p>
   <br />
   <h2>golf</h2>
   <p>
-    <button reset on:click={copy}>
+    <button reset on:click|preventDefault={copy}>
       <pre>
 # [sclin](https://github.com/molarmanful/sclin), {bytes} bytes
 

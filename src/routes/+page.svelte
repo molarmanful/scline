@@ -13,6 +13,7 @@
 
   let href = ''
   let code = ''
+  let header = ''
   let bytes = 0
 
   let out = ''
@@ -33,7 +34,7 @@
     state = 'out'
     out = '[scline: loading...]'
 
-    let cc = await compress(code)
+    let cc = await compress(`${header}\n${code}`)
     src = source('/run/' + cc)
     src
       .onError(() => {
@@ -67,7 +68,9 @@
   })
 
   let permalink = async () => {
-    history.pushState({}, '', `##${await compress(code)}`)
+    let h = header && (await compress(header))
+    let c = code && (await compress(code))
+    history.pushState({}, '', `#${h}#${c}`)
     href = location.href
     state = 'perma'
   }
@@ -83,7 +86,10 @@
 
   onMount(async () => {
     let { hash } = location
-    if (hash.startsWith('##')) code = await decompress(hash.slice(2))
+    if (hash.startsWith('#')) {
+      let res = hash.slice(1).split`#`.slice(2)
+      ;[header, code] = await Promise.all(res.map(x => x && decompress(x)))
+    }
   })
 </script>
 
@@ -109,7 +115,15 @@
     </div>
   </header>
   <main class="min-h-0 flex-(~ 1) lt-lg:flex-col gap-4">
-    <Code bind:value={code} bind:bytes />
+    <div class="flex-(~ col) gap-4">
+      <Code
+        class="h-1/6"
+        bytec={false}
+        placeholder="header..."
+        bind:value={header}
+      />
+      <Code class="flex-1" bind:value={code} bind:bytes />
+    </div>
     {#if state == 'perma'}
       <Perma {bytes} {code} {href} />
     {:else if state == 'abt'}
