@@ -87,7 +87,7 @@
   onMount(async () => {
     let { hash } = location
     if (hash.startsWith('#')) {
-      let res = hash.slice(1).split`#`.slice(0, 2)
+      let res = hash.split`#`.slice(1, 3)
       ;[header, code] = await Promise.all(res.map(decompress))
     }
   })
