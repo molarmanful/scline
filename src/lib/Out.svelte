@@ -13,9 +13,9 @@
 
 <textarea
   bind:this={el}
-  class="ws-pre-wrap break-all"
+  class="ws-pre-wrap break-all flex-1"
   disabled
-  placeholder="output..."
+  placeholder="stdout..."
   spellcheck="false"
   {value}
   {...$$restProps}

@@ -7,19 +7,21 @@
   import Brand from '$lib/Brand.svelte'
   import Button from '$lib/Button.svelte'
   import Code from '$lib/Code.svelte'
-  import { compress, decompress } from '$lib/ffl'
+  import Examples from '$lib/Examples.svelte'
+  import { decompress, perm, unperm } from '$lib/ffl'
   import Out from '$lib/Out.svelte'
   import Perma from '$lib/Perma.svelte'
 
   let href = ''
   let code = ''
   let header = ''
+  let inp = ''
   let bytes = 0
 
   let out = ''
 
   let state = 'out'
-  $: code, (state = 'out')
+  $: code, header, inp, (state = 'out')
 
   let src
   let force = false
@@ -34,8 +36,8 @@
     state = 'out'
     out = '[scline: loading...]'
 
-    let cc = await compress(`${header}\n${code}`)
-    src = source('/run/' + cc)
+    let xs = await perm([header, code, inp], '~')
+    src = source('/run/' + xs)
     src
       .onError(() => {
         stop()
@@ -68,9 +70,8 @@
   })
 
   let permalink = async () => {
-    let h = header && (await compress(header))
-    let c = code && (await compress(code))
-    history.pushState({}, '', `#${h}#${c}`)
+    let l = await perm([header, code, inp])
+    history.pushState({}, '', l)
     href = location.href
     state = 'perma'
   }
@@ -84,11 +85,14 @@
     state = 'abt'
   }
 
+  let examples = () => {
+    state = 'exs'
+  }
+
   onMount(async () => {
     let { hash } = location
-    if (hash.startsWith('#')) {
-      let res = hash.split`#`.slice(1, 3)
-      ;[header, code] = await Promise.all(res.map(decompress))
+    if (hash.startsWith`#`) {
+      ;[header, code, inp] = await unperm(hash)
     }
   })
 </script>
@@ -109,13 +113,16 @@
       <Button on:click={permalink}>
         <i class="i-ic-outline-link"></i> link
       </Button>
+      <Button on:click={examples}>
+        <i class="i-ic-outline-featured-play-list"></i> examples
+      </Button>
       <Button on:click={abt}>
         <i class="i-ic-outline-info"></i> about
       </Button>
     </div>
   </header>
   <main class="min-h-0 flex-(~ 1) lt-lg:flex-col gap-4">
-    <div class="flex-(~ col) gap-4">
+    <div>
       <Code
         class="h-1/6"
         bytec={false}
@@ -124,18 +131,28 @@
       />
       <Code class="flex-1" bind:value={code} bind:bytes />
     </div>
-    {#if state == 'perma'}
-      <Perma {bytes} {code} {href} />
-    {:else if state == 'abt'}
-      <About />
-    {:else}
-      <Out value={out} />
-    {/if}
+    <div>
+      {#if state == 'perma'}
+        <Perma {bytes} {code} {href} />
+      {:else if state == 'exs'}
+        <Examples bind:header bind:code />
+      {:else if state == 'abt'}
+        <About />
+      {:else}
+        <Code
+          class="h-1/6"
+          bytec={false}
+          placeholder="stdin..."
+          bind:value={inp}
+        />
+        <Out value={out} />
+      {/if}
+    </div>
   </main>
 </div>
 
 <style lang="postcss">
   main > :global(*) {
-    @apply flex-1;
+    --at-apply: 'flex-(~ 1 col) gap-4';
   }
 </style>

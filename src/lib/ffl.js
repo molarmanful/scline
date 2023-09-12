@@ -21,3 +21,11 @@ export const compress = async a =>
 
 export const decompress = async a =>
   ffl.strFromU8(await fpdecomp(fromB64(a), {}))
+
+export const perm = async (a, h = '#') => {
+  let xs = await Promise.all(a.map(async x => x && (await compress(x))))
+  return h + xs.join(h)
+}
+
+export const unperm = async (a, h = '#') =>
+  await Promise.all(a.split(h).slice(1).map(decompress))

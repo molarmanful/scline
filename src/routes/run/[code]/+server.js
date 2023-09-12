@@ -3,7 +3,7 @@ import { PassThrough } from 'stream'
 
 import { event } from 'sveltekit-sse'
 
-import { compress, decompress } from '$lib/ffl'
+import { compress, unperm } from '$lib/ffl'
 
 let MSG = (x, m) => JSON.stringify([x, m])
 let CLOSE = MSG(-1, 0)
@@ -12,9 +12,12 @@ let delay = ms => new Promise(r => setTimeout(r, ms))
 let MAX_LEN = 128000
 
 export const GET = async ({ params: { code } }) => {
-  code = await decompress(code)
+  let [h, c, i] = await unperm(code, '~')
+  if (h) c = h + '\n' + c
   let std = new PassThrough()
-  let run = spawn('sclin', ['--nocolor', '-i', '-e', code])
+  let run = spawn('sclin', ['--nocolor', '-i', '-e', c])
+  run.stdin.write(i)
+  run.stdin.end()
   run.stdout.pipe(std)
   run.stderr.pipe(std)
 
