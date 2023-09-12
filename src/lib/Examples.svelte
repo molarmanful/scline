@@ -1,7 +1,7 @@
 <script>
   import Button from './Button.svelte'
 
-  export let header, code
+  export let header, code, out
 
   let exs = import.meta.glob('../examples/*.sclin', {
     eager: true,
@@ -9,15 +9,18 @@
   })
 </script>
 
-<div panel>
+<div class="flex-(~ col) gap-4" panel>
   {#each Object.entries(exs) as [k, v]}
-    <Button
-      on:click={() => {
-        header = ''
-        code = v
-      }}
-    >
-      {k.replace(/.*?(\w+)\.sclin$/g, '$1')}
-    </Button>
+    <div>
+      <Button
+        on:click={() => {
+          header = ''
+          code = v
+          out = ''
+        }}
+      >
+        {k.replace(/.*?(\w+)\.sclin$/g, '$1')}
+      </Button>
+    </div>
   {/each}
 </div>

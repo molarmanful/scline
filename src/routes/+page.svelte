@@ -135,7 +135,7 @@
       {#if state == 'perma'}
         <Perma {bytes} {code} {href} />
       {:else if state == 'exs'}
-        <Examples bind:header bind:code />
+        <Examples bind:header bind:code bind:out />
       {:else if state == 'abt'}
         <About />
       {:else}
