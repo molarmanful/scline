@@ -1,18 +1,17 @@
 FROM molarmanful/sclin as pre
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN curl https://get.volta.sh | bash
 ENV VOLTA_HOME /root/.volta
 ENV PATH $PATH:/root/.volta/bin
-RUN volta install node
-
-RUN mkdir /app
+RUN volta install node && mkdir /app
 WORKDIR /app
 
 COPY . .
 RUN npm i -g pnpm && pnpm i && pnpm build
 
 
-FROM ubuntu
+FROM ubuntu:22.04
 
 COPY --from=pre /opt/java/openjdk /opt/java/openjdk
 COPY --from=pre /scbin /scbin
@@ -25,4 +24,5 @@ ENV LC_ALL C.UTF-8
 ENV PATH $PATH:/opt/java/openjdk/bin:/scbin:/root/.volta/bin
 ENV NODE_ENV production
 ENV BODY_SIZE_LIMIT 128000
+EXPOSE 3000
 CMD ["pnpm", "start"]
