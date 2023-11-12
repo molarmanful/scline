@@ -9,11 +9,13 @@ import { compress, unperm } from '$lib/ffl'
 let MSG = (x, m) => JSON.stringify([x, m])
 let CLOSE = MSG(-1, 0)
 
-if (!sh.test('-f', 'jailsh')) {
-  sh.echo('#!/bin/bash\nmkdir jail; chroot $PWD/jail').to('jailsh')
-  sh.chmod('+x', 'jailsh')
+let jailsh = '/usr/bin/jailsh'
+if (!sh.test('-f', jailsh)) {
+  sh.echo('#!/bin/bash\nchroot /jail').to(jailsh)
+  sh.chmod('+x', jailsh)
 }
-sh.exec('useradd -M -s $PWD/jailsh jail')
+if (!sh.test('-d', '/jail')) sh.mkdir('/jail')
+sh.exec(`useradd -M -s ${jailsh} jail`)
 
 let id = sh.exec('id jail').stdout.trim()
 let uid = +id.match(/uid=(\d+)/)[1]
@@ -25,7 +27,11 @@ export const GET = async ({ params: { code } }) => {
   let [h, c, i] = await unperm(code, '~')
   if (h) c = h + '\n' + c
   let std = new PassThrough()
-  let run = spawn('sclin', ['--nocolor', '-i', '-e', c], { uid, gid })
+  let run = spawn('sclin', ['--nocolor', '-i', '-e', c], {
+    uid,
+    gid,
+    cwd: '/jail',
+  })
   run.stdin.write(i)
   run.stdin.end()
   run.stdout.pipe(std)
