@@ -1,28 +1,41 @@
-FROM molarmanful/sclin as pre
+FROM molarmanful/sclin:latest as sclin
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-RUN curl https://get.volta.sh | bash
-ENV VOLTA_HOME /root/.volta
-ENV PATH $PATH:/root/.volta/bin
-RUN volta install node && mkdir /app
+
+FROM node:20 as node
+
 WORKDIR /app
-
+EXPOSE 3000
 COPY . .
-RUN npm i -g pnpm && pnpm i && pnpm build
+RUN npm i -g pnpm && pnpm i
 
 
-FROM ubuntu:22.04
+FROM node as dev
 
-COPY --from=pre /opt/java/openjdk /opt/java/openjdk
-COPY --from=pre /scbin /scbin
-COPY --from=pre /root/.volta /root/.volta
-COPY --from=pre /app /app
+COPY --from=sclin /opt/java/openjdk /opt/java/openjdk
+COPY --from=sclin /scbin /scbin
+COPY --from=node /app /app
 
-WORKDIR /app
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
-ENV PATH $PATH:/opt/java/openjdk/bin:/scbin:/root/.volta/bin
+ENV PATH $PATH:/opt/java/openjdk/bin:/scbin
+ENV BODY_SIZE_LIMIT 128000
+CMD ["pnpm", "dev", "--host=0.0.0.0", "--port=3000"]
+
+
+FROM node as node-build
+COPY . .
+RUN pnpm build
+
+
+FROM node-build as prod
+
+COPY --from=sclin /opt/java/openjdk /opt/java/openjdk
+COPY --from=sclin /scbin /scbin
+COPY --from=node-build /app /app
+
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+ENV PATH $PATH:/opt/java/openjdk/bin:/scbin
 ENV NODE_ENV production
 ENV BODY_SIZE_LIMIT 128000
-EXPOSE 3000
 CMD ["pnpm", "start"]
