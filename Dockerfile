@@ -16,7 +16,7 @@ COPY --from=sclin /opt/java/openjdk /opt/java/openjdk
 COPY --from=sclin /scbin /scbin
 COPY --from=node /app /app
 
-RUN mkdir /jail && useradd -M -s /bin/false jail
+RUN mkdir /jail && useradd -M -s /bin/false jail && sclin -e '"hello world">o'
 
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
@@ -36,7 +36,7 @@ COPY --from=sclin /opt/java/openjdk /opt/java/openjdk
 COPY --from=sclin /scbin /scbin
 COPY --from=node-build /app /app
 
-RUN mkdir /jail && useradd -M -s /bin/false jail
+RUN mkdir /jail && useradd -M -s /bin/false jail && sclin -e '"hello world">o'
 
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
