@@ -1,6 +1,7 @@
 import { spawn } from 'child_process'
 import { PassThrough } from 'stream'
 
+import posix from 'posix'
 import { event } from 'sveltekit-sse'
 
 import { compress, unperm } from '$lib/ffl'
@@ -14,7 +15,12 @@ export const GET = async ({ params: { code } }) => {
   let [h, c, i] = await unperm(code, '~')
   if (h) c = h + '\n' + c
   let std = new PassThrough()
-  let run = spawn('sclin', ['--nocolor', '-i', '-e', c], { cwd: '/jail' })
+  let { uid, gid } = posix.getpwnam('jail')
+  let run = spawn('sclin', ['--nocolor', '-i', '-e', c], {
+    uid,
+    gid,
+    cwd: '/jail',
+  })
   run.stdin.write(i)
   run.stdin.end()
   run.stdout.pipe(std)
