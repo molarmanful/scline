@@ -6,6 +6,7 @@ FROM node:20 as node
 WORKDIR /app
 EXPOSE 3000
 COPY . .
+
 RUN npm i -g pnpm && pnpm i
 
 
@@ -14,6 +15,8 @@ FROM node as dev
 COPY --from=sclin /opt/java/openjdk /opt/java/openjdk
 COPY --from=sclin /scbin /scbin
 COPY --from=node /app /app
+
+RUN mkdir /jail && useradd -M -s /bin/false jail
 
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
@@ -32,6 +35,8 @@ FROM node-build as prod
 COPY --from=sclin /opt/java/openjdk /opt/java/openjdk
 COPY --from=sclin /scbin /scbin
 COPY --from=node-build /app /app
+
+RUN mkdir /jail && useradd -M -s /bin/false jail
 
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8

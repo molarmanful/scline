@@ -4,22 +4,18 @@ import { PassThrough } from 'stream'
 import sh from 'shelljs'
 import { event } from 'sveltekit-sse'
 
+import { building, dev } from '$app/environment'
 import { compress, unperm } from '$lib/ffl'
 
 let MSG = (x, m) => JSON.stringify([x, m])
 let CLOSE = MSG(-1, 0)
 
-let jailsh = '/usr/bin/jailsh'
-if (!sh.test('-f', jailsh)) {
-  sh.echo('#!/bin/bash\nchroot /jail').to(jailsh)
-  sh.chmod('+x', jailsh)
+let uid, gid
+if (!building) {
+  let id = sh.exec('id jail').stdout.trim()
+  uid = +id.match(/uid=(\d+)/)[1]
+  gid = +id.match(/gid=(\d+)/)[1]
 }
-if (!sh.test('-d', '/jail')) sh.mkdir('/jail')
-sh.exec(`useradd -M -s ${jailsh} jail`)
-
-let id = sh.exec('id jail').stdout.trim()
-let uid = +id.match(/uid=(\d+)/)[1]
-let gid = +id.match(/gid=(\d+)/)[1]
 
 let MAX_LEN = 128000
 
