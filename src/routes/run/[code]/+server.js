@@ -21,7 +21,7 @@ export const GET = async ({ params: { code } }) => {
     gid,
     cwd: '/jail',
   })
-  run.stdin.write(i || '')
+  run.stdin.write(i)
   run.stdin.end()
   run.stdout.pipe(std)
   run.stderr.pipe(std)
