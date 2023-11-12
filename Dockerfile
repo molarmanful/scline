@@ -16,16 +16,18 @@ COPY --from=sclin /opt/java/openjdk /opt/java/openjdk
 COPY --from=sclin /scbin /scbin
 COPY --from=node /app /app
 
-RUN mkdir /jail && useradd -M -s /bin/false jail && sclin -e '"hello world">o'
-
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 ENV PATH $PATH:/opt/java/openjdk/bin:/scbin
 ENV BODY_SIZE_LIMIT 128000
+
+RUN mkdir /jail && useradd -M -s /bin/false jail && sclin -e '"hello world">o'
+USER jail
 CMD ["pnpm", "dev", "--host=0.0.0.0", "--port=3000"]
 
 
 FROM node as node-build
+
 COPY . .
 RUN pnpm build
 
@@ -36,11 +38,12 @@ COPY --from=sclin /opt/java/openjdk /opt/java/openjdk
 COPY --from=sclin /scbin /scbin
 COPY --from=node-build /app /app
 
-RUN mkdir /jail && useradd -M -s /bin/false jail && sclin -e '"hello world">o'
-
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 ENV PATH $PATH:/opt/java/openjdk/bin:/scbin
 ENV NODE_ENV production
 ENV BODY_SIZE_LIMIT 128000
+
+RUN mkdir /jail && useradd -M -s /bin/false jail && sclin -e '"hello world">o'
+USER jail
 CMD ["pnpm", "start"]

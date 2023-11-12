@@ -4,18 +4,10 @@ import { PassThrough } from 'stream'
 import sh from 'shelljs'
 import { event } from 'sveltekit-sse'
 
-import { building, dev } from '$app/environment'
 import { compress, unperm } from '$lib/ffl'
 
 let MSG = (x, m) => JSON.stringify([x, m])
 let CLOSE = MSG(-1, 0)
-
-let uid, gid
-if (!building) {
-  let id = sh.exec('id jail').stdout.trim()
-  uid = +id.match(/uid=(\d+)/)[1]
-  gid = +id.match(/gid=(\d+)/)[1]
-}
 
 let MAX_LEN = 128000
 
@@ -24,8 +16,6 @@ export const GET = async ({ params: { code } }) => {
   if (h) c = h + '\n' + c
   let std = new PassThrough()
   let run = spawn('sclin', ['--nocolor', '-i', '-e', c], {
-    uid,
-    gid,
     cwd: '/jail',
   })
   run.stdin.write(i)
