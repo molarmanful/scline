@@ -12,7 +12,8 @@ const CLOSE = MSG(-1, '')
 
 const MAX_LEN = 128000
 
-export const POST: RequestHandler = async ({ params: { code } }) => {
+export const POST: RequestHandler = async ({ request }) => {
+  const code = await request.text()
   let [h, c, i] = await unperm(code, '~')
   if (h)
     c = `${h}\n${c}`

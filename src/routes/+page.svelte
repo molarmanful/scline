@@ -1,8 +1,10 @@
 <script lang='ts'>
+  import type { Unsubscriber } from 'svelte/store'
+
   import { pushState } from '$app/navigation'
   import { About, Brand, Button, Code, Examples, Out, Perma } from '$lib'
   import { decompress, perm, unperm } from '$lib/ffl'
-  import { source } from 'sveltekit-sse'
+  import { source, type Source } from 'sveltekit-sse'
 
   let href = $state('')
   let code = $state('')
@@ -13,18 +15,25 @@
   let out = $state('')
 
   let tab = $state('out')
+
   $effect(() => {
     ((_) => {})([code, header, inp])
     tab = 'out'
   })
 
-  let src = $state<ReturnType<typeof source> | false>()
-  let force = false
-  const stop = () => {
-    if (!src)
-      return
-    src.close()
-    src = false
+  let src = $state<Source>()
+  let unsub = $state<Unsubscriber>()
+
+  const stop = (done: boolean = false) => () => {
+    unsub?.()
+
+    if (src) {
+      src.close()
+      src = void 0
+    }
+
+    if (!done)
+      out += '\n[scline: stopped]'
   }
 
   const run = async () => {
@@ -32,28 +41,25 @@
     out = '[scline: loading...]'
 
     const xs = await perm([header, code, inp], '~')
-    src = source(`/run/${xs}`, {
-      error: stop,
+    src = source(`/run`, {
+      options: {
+        body: xs,
+      },
+      error: stop(),
     })
 
     let fst = true
-    const unsub = src.select('msg').subscribe(async (e) => {
+    unsub = src.select('msg').subscribe(async (e) => {
       if (fst) {
         out = ''
         fst = false
       }
-      if (force) {
-        force = false
-        unsub()
-        stop()
+      if (!e)
         return
-      }
 
-      console.log(e)
       const [x, m] = JSON.parse(e)
       if (x < 0) {
-        unsub()
-        stop()
+        stop(true)()
         return
       }
 
@@ -112,12 +118,7 @@
     <Brand />
     <div class='mb-4 flex gap-4'>
       {#if src}
-        <Button
-          onclick={() => {
-            force = true
-            stop()
-          }}
-        >
+        <Button onclick={stop()}>
           <i class='i-ic-outline-stop'></i> stop
         </Button>
       {:else}
