@@ -21,7 +21,7 @@
     "fflate": "^0.8.2",
     "posix": "^4.2.0",
     "shelljs": "^0.8.5",
-    "svelte": "^4.2.19",
+    "svelte": "5.0.0-next.252",
     "sveltekit-rate-limiter": "^0.4.3",
     "sveltekit-sse": "^0.3.7",
     "uint8-to-base64": "^0.2.0",
@@ -31,9 +31,7 @@
   "devDependencies": {
     "@antfu/eslint-config": "^3.6.2",
     "@sveltejs/vite-plugin-svelte": "^3.1.2",
-    "@unocss/eslint-plugin": "^0.62.4",
     "eslint": "^8.57.1",
-    "eslint-plugin-svelte": "^2.44.0",
     "svelte-check": "^4.0.2",
     "typescript": "^5.6.2",
     "typescript-eslint": "^8.6.0"

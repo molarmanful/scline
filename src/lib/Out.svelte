@@ -1,15 +1,24 @@
-<script>
-  export let value = ''
+<script lang='ts'>
+  import type { HTMLTextareaAttributes } from 'svelte/elements'
 
-  let el
-  const scrollB = () => {
-    if (el) {
-      requestAnimationFrame(() => {
-        el.scrollTop = el.scrollHeight
-      })
-    }
+  interface Props extends HTMLTextareaAttributes {
+    value?: string
   }
-  $: value, scrollB()
+
+  const { value = '', ...rest }: Props = $props()
+
+  let el = $state<HTMLElement>()
+
+  $effect(() => {
+    ((_) => {})(value)
+
+    requestAnimationFrame(() => {
+      if (!el)
+        return
+
+      el.scrollTop = el.scrollHeight
+    })
+  })
 </script>
 
 <textarea
@@ -19,5 +28,5 @@
   placeholder='stdout...'
   spellcheck='false'
   {value}
-  {...$$restProps}
+  {...rest}
 ></textarea>

@@ -1,24 +1,24 @@
-<script>
-  export let value = ''
-  export let bytec = true
-  export let bytes = 0
-  export let placeholder = 'code...'
+<script lang='ts'>
+  import type { HTMLAttributes } from 'svelte/elements'
 
-  $: bytes = new Blob([value]).size
+  interface Props extends HTMLAttributes<HTMLDivElement> {
+    value?: string
+    bytec?: boolean
+    placeholder?: string
+    clazz?: string
+    f?: (bytes: () => number) => void
+  }
+
+  let { value = $bindable(''), bytec = true, f = () => {}, placeholder = 'code...', clazz = '', ...rest }: Props = $props()
+
+  const bytes = $derived(new Blob([value]).size)
+  f(() => bytes)
 </script>
 
-<div parent {...$$restProps}>
-  <textarea class='full ws-pre' {placeholder} spellcheck='false' bind:value
-  ></textarea>
+<div class='{clazz} relative' {...rest}>
+  <textarea class='full ws-pre' {placeholder} spellcheck='false' bind:value></textarea>
+
   {#if bytec}
-    <div class='corn'>
-      {bytes} bytes
-    </div>
+    <div class='corn'>{bytes} bytes</div>
   {/if}
 </div>
-
-<style lang='postcss'>
-  [parent] {
-    @apply relative;
-  }
-</style>

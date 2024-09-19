@@ -132,17 +132,15 @@
     </div>
   </header>
 
-  <main
-    class='min-h-0 flex flex-1 gap-4 [&>*]:(flex flex-1 flex-col gap-4) lt-lg:flex-col'
-  >
+  <main class='min-h-0 flex flex-1 gap-4 [&>*]:(flex flex-1 flex-col gap-4) lt-lg:flex-col'>
     <div>
       <Code
-        class='h-1/6'
         bytec={false}
+        clazz='h-1/6'
         placeholder='header...'
         bind:value={header}
       />
-      <Code class='flex-1' bind:value={code} bind:bytes />
+      <Code clazz='flex-1' f={x => bytes = x()} bind:value={code} />
     </div>
 
     <div>
@@ -154,8 +152,8 @@
         <About />
       {:else}
         <Code
-          class='h-1/6'
           bytec={false}
+          clazz='h-1/6'
           placeholder='stdin...'
           bind:value={inp}
         />
