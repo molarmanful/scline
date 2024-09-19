@@ -21,10 +21,10 @@ COPY --from=sclin /opt/java/openjdk /opt/java/openjdk
 COPY --from=sclin /scbin /scbin
 COPY --from=node /app /app
 
-ENV LANG C.UTF-8
-ENV LC_ALL C.UTF-8
-ENV PATH $PATH:/opt/java/openjdk/bin:/scbin
-ENV BODY_SIZE_LIMIT 128000
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+ENV PATH=$PATH:/opt/java/openjdk/bin:/scbin
+ENV BODY_SIZE_LIMIT=128000
 
 RUN scripts/precmd.sh
 CMD ["pnpm", "dev", "--host=0.0.0.0", "--port=3000"]
@@ -43,11 +43,11 @@ COPY --from=sclin /opt/java/openjdk /opt/java/openjdk
 COPY --from=sclin /scbin /scbin
 COPY --from=node-build /app /app
 
-ENV LANG C.UTF-8
-ENV LC_ALL C.UTF-8
-ENV PATH $PATH:/opt/java/openjdk/bin:/scbin
-ENV NODE_ENV production
-ENV BODY_SIZE_LIMIT 128000
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+ENV PATH=$PATH:/opt/java/openjdk/bin:/scbin
+ENV NODE_ENV=production
+ENV BODY_SIZE_LIMIT=128000
 
 RUN scripts/precmd.sh
 CMD ["pnpm", "start"]
