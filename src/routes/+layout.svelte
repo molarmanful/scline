@@ -1,9 +1,8 @@
 <script>
+  import { onMount } from 'svelte'
   import '@unocss/reset/tailwind-compat.css'
   import 'uno.css'
-  import '../app.postcss'
-
-  import { onMount } from 'svelte'
+  import '../app.css'
 
   let loaded = false
 

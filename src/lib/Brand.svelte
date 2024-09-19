@@ -1,6 +1,6 @@
 <h1><span a>sc</span>lin<span b>e</span></h1>
 
-<style lang="postcss">
+<style lang='postcss'>
   h1 {
     @apply inline-block;
 

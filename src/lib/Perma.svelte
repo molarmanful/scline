@@ -3,9 +3,9 @@
   export let bytes = 0
   export let code = ''
 
-  let copy = ({ target }) => {
-    let s = getSelection()
-    let r = document.createRange()
+  const copy = ({ target }) => {
+    const s = getSelection()
+    const r = document.createRange()
     r.selectNodeContents(target)
     s.removeAllRanges()
     s.addRange(r)
@@ -33,7 +33,7 @@
   </p>
 </div>
 
-<style lang="postcss">
+<style lang='postcss'>
   button {
     @apply bg-transparent text-(inherit left) cursor-copy;
   }

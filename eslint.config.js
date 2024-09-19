@@ -1,91 +1,35 @@
-import js from '@eslint/js'
-import prettier from 'eslint-config-prettier'
-import imprt from 'eslint-plugin-import'
-import svelte from 'eslint-plugin-svelte'
-import globals from 'globals'
-import svelteParser from 'svelte-eslint-parser'
+import antfu from '@antfu/eslint-config'
 
-export default [
+export default antfu(
   {
-    ignores: ['.svelte-kit/**/*', 'build/**/*'],
-  },
-
-  js.configs.recommended,
-
-  {
-    languageOptions: {
-      parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
+    stylistic: true,
+    svelte: {
+      'overrides': {
+        'svelte/sort-attributes': 1,
       },
+      'svelte/html-self-closing': [1, {
+        void: 'always',
+        normal: 'never',
+        component: 'always',
+        svelte: 'always',
+      }],
+    },
+    unocss: true,
+    formatters: {
+      css: true,
+      html: true,
     },
   },
-
   {
-    files: ['**/*.svelte'],
-    languageOptions: {
-      parser: svelteParser,
-    },
-    plugins: {
-      svelte,
-    },
     rules: {
-      ...svelte.configs.base.overrides[0].rules,
-      ...svelte.configs.prettier.rules,
-      'svelte/sort-attributes': 1,
-    },
-  },
-
-  {
-    languageOptions: {
-      globals: {
-        ...globals.node,
-        ...globals.browser,
-      },
-    },
-    plugins: {
-      import: imprt,
-    },
-    settings: {
-      'import/parsers': {
-        espree: ['.js'],
-      },
-    },
-    rules: {
-      'import/export': 2,
-      'import/no-duplicates': 1,
-      'import/order': [
-        1,
-        {
-          alphabetize: {
-            order: 'asc',
-            caseInsensitive: true,
-          },
-          'newlines-between': 'always',
+      'antfu/top-level-function': 0,
+      'import/order': [1, {
+        'alphabetize': {
+          order: 'asc',
+          caseInsensitive: true,
         },
-      ],
-      'sort-imports': [
-        1,
-        {
-          ignoreDeclarationSort: true,
-        },
-      ],
+        'newlines-between': 'always',
+      }],
     },
   },
-
-  {
-    languageOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
-      globals: {
-        ...globals.node,
-        ...globals.browser,
-      },
-    },
-    rules: {
-      'no-unused-vars': 1,
-    },
-  },
-
-  prettier,
-]
+)

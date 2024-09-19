@@ -2,21 +2,22 @@
   export let value = ''
 
   let el
-  let scrollB = () => {
-    if (el)
+  const scrollB = () => {
+    if (el) {
       requestAnimationFrame(() => {
         el.scrollTop = el.scrollHeight
       })
+    }
   }
   $: value, scrollB()
 </script>
 
 <textarea
   bind:this={el}
-  class="ws-pre-wrap break-all flex-1"
+  class='flex-1 ws-pre-wrap break-all'
   disabled
-  placeholder="stdout..."
-  spellcheck="false"
+  placeholder='stdout...'
+  spellcheck='false'
   {value}
   {...$$restProps}
 ></textarea>

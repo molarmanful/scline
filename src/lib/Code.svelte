@@ -8,16 +8,16 @@
 </script>
 
 <div parent {...$$restProps}>
-  <textarea class="full ws-pre" {placeholder} spellcheck="false" bind:value
+  <textarea class='full ws-pre' {placeholder} spellcheck='false' bind:value
   ></textarea>
   {#if bytec}
-    <div class="corn">
+    <div class='corn'>
       {bytes} bytes
     </div>
   {/if}
 </div>
 
-<style lang="postcss">
+<style lang='postcss'>
   [parent] {
     @apply relative;
   }

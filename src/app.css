@@ -36,28 +36,28 @@ a {
   --at-apply: 'hover:text-white';
 }
 
-button:not([reset]),
+button:not([data-reset]),
 textarea,
-[panel] {
+[data-panel] {
   @apply color-gray-400 b-line bg-transparent transition-colors;
   --at-apply: 'outline-none! focus:text-white';
 }
 
-button:not([reset]) {
+button:not([data-reset]) {
   @apply p-2;
   --at-apply: 'hover:text-white';
 }
 
 textarea,
-[panel] {
+[data-panel] {
   @apply p-4;
 }
 
 textarea {
-  @apply font-mono resize-none;
+  @apply font-mono resize-none rounded-none;
   --at-apply: 'placeholder:color-gray-500';
 }
 
-[panel] {
+[data-panel] {
   @apply overflow-auto flex-1;
 }

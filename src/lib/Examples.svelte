@@ -1,15 +1,16 @@
 <script>
-  import Button from './Button.svelte'
+  import { Button } from '.'
 
   export let header, code, out
 
-  let exs = import.meta.glob('../examples/*.sclin', {
+  const exs = import.meta.glob('../examples/*.sclin', {
     eager: true,
-    as: 'raw',
+    import: 'default',
+    query: '?raw',
   })
 </script>
 
-<div class="flex-(~ col) gap-4" panel>
+<div class='flex flex-(col) gap-4' data-panel>
   {#each Object.entries(exs) as [k, v]}
     <div>
       <Button
@@ -19,7 +20,7 @@
           out = ''
         }}
       >
-        {k.replace(/.*?(\w+)\.sclin$/g, '$1')}
+        {k.match(/\/([^/]+)\.sclin$/)?.[1]}
       </Button>
     </div>
   {/each}

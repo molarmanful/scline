@@ -1,0 +1,8 @@
+export { default as A } from './A.svelte'
+export { default as About } from './About.svelte'
+export { default as Brand } from './Brand.svelte'
+export { default as Button } from './Button.svelte'
+export { default as Code } from './Code.svelte'
+export { default as Examples } from './Examples.svelte'
+export { default as Out } from './Out.svelte'
+export { default as Perma } from './Perma.svelte'
