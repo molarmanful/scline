@@ -9,7 +9,7 @@
     f?: (bytes: () => number) => void
   }
 
-  let { value = $bindable(''), bytec = true, f = () => {}, placeholder = 'code...', clazz = '', ...rest }: Props = $props()
+  let { value = $bindable(''), bytec = false, f = () => {}, placeholder = 'code...', clazz = '', ...rest }: Props = $props()
 
   const bytes = $derived(new Blob([value]).size)
   f(() => bytes)

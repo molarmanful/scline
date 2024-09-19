@@ -102,7 +102,7 @@
   }}
 />
 
-<div class='screen flex flex-(col) p-4'>
+<div class='screen flex flex-col p-4'>
   <header>
     <Brand />
     <div class='mb-4 flex gap-4'>
@@ -135,29 +135,37 @@
   <main class='min-h-0 flex flex-1 gap-4 [&>*]:(flex flex-1 flex-col gap-4) lt-lg:flex-col'>
     <div>
       <Code
-        bytec={false}
         clazz='h-1/6'
         placeholder='header...'
         bind:value={header}
       />
-      <Code clazz='flex-1' f={x => bytes = x()} bind:value={code} />
+
+      <Code
+        bytec={true}
+        clazz='flex-1'
+        f={x => bytes = x()}
+        bind:value={code}
+      />
     </div>
 
     <div>
       {#if state === 'perma'}
         <Perma {bytes} {code} {href} />
+
       {:else if state === 'exs'}
         <Examples bind:header bind:code bind:out />
+
       {:else if state === 'abt'}
         <About />
+
       {:else}
         <Code
-          bytec={false}
           clazz='h-1/6'
           placeholder='stdin...'
           bind:value={inp}
         />
         <Out value={out} />
+
       {/if}
     </div>
   </main>
