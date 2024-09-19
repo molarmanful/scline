@@ -10,7 +10,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "start": "node build",
-    "lint": "eslint --fix"
+    "lint": "eslint --fix",
+    "check": "svelte-check"
   },
   "dependencies": {
     "@iconify-json/ic": "^1.2.0",
