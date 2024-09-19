@@ -1,26 +1,36 @@
-<script>
-  export let href = ''
-  export let bytes = 0
-  export let code = ''
+<script lang='ts'>
+  import type { HTMLAttributes } from 'svelte/elements'
 
-  const copy = ({ target }) => {
+  interface Props extends HTMLAttributes<HTMLDivElement> {
+    href: string
+    bytes: number
+    code: string
+  }
+
+  const { href = '', bytes = 0, code = '', ...rest }: Props = $props()
+
+  const copy = (e: Event) => {
+    e.preventDefault()
+
+    const el = e.target as HTMLElement
     const s = getSelection()
     const r = document.createRange()
-    r.selectNodeContents(target)
-    s.removeAllRanges()
-    s.addRange(r)
 
-    navigator.clipboard.writeText(target.textContent)
+    r.selectNodeContents(el)
+    s?.removeAllRanges()
+    s?.addRange(r)
+
+    navigator.clipboard.writeText(el.textContent ?? '')
   }
 </script>
 
-<div data-panel {...$$restProps}>
+<div data-panel {...rest}>
   <h2>url</h2>
-  <div data-p><button data-reset on:click|preventDefault={copy}><pre>{href}</pre></button></div>
+  <div data-p><button data-reset onclick={copy}><pre>{href}</pre></button></div>
   <br />
   <h2>golf</h2>
   <div data-p>
-    <button data-reset on:click|preventDefault={copy}>
+    <button data-reset onclick={copy}>
       <pre>
 # [sclin](https://github.com/molarmanful/sclin), {bytes} bytes
 

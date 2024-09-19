@@ -1,12 +1,18 @@
-<script>
-  import { onMount } from 'svelte'
+<script lang='ts'>
+  import type { Snippet } from 'svelte'
   import '@unocss/reset/tailwind-compat.css'
   import 'uno.css'
   import '../app.css'
 
-  let loaded = false
+  interface Props {
+    children: Snippet
+  }
 
-  onMount(() => {
+  const { children }: Props = $props()
+
+  let loaded = $state(false)
+
+  $effect(() => {
     loaded = true
   })
 </script>
@@ -16,5 +22,5 @@
 </svelte:head>
 
 <div class="{loaded ? 'opacity-100' : 'opacity-0'} transition-opacity-400">
-  <slot />
+  {@render children()}
 </div>

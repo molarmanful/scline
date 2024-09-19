@@ -1,9 +1,19 @@
-<script>
+<script lang='ts'>
   import { Button } from '.'
 
-  export let header, code, out
+  interface Props {
+    header: string
+    code: string
+    out: string
+  }
 
-  const exs = import.meta.glob('../examples/*.sclin', {
+  let {
+    header = $bindable(),
+    code = $bindable(),
+    out = $bindable(),
+  }: Props = $props()
+
+  const exs = import.meta.glob<string>('../examples/*.sclin', {
     eager: true,
     import: 'default',
     query: '?raw',
