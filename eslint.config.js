@@ -23,12 +23,21 @@ export default antfu(
   {
     rules: {
       'antfu/top-level-function': 0,
-      'import/order': [1, {
-        'alphabetize': {
-          order: 'asc',
-          caseInsensitive: true,
-        },
-        'newlines-between': 'always',
+      'perfectionist/sort-imports': [2, {
+        groups: [
+          'type',
+          ['parent-type', 'sibling-type', 'index-type'],
+
+          'builtin',
+          'external',
+          ['internal', 'internal-type'],
+          ['parent', 'sibling', 'index'],
+          'side-effect',
+          'object',
+          'unknown',
+        ],
+        newlinesBetween: 'always',
+        type: 'natural',
       }],
     },
   },

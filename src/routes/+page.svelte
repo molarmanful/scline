@@ -1,7 +1,7 @@
 <script lang='ts'>
-  import { source } from 'sveltekit-sse'
   import { About, Brand, Button, Code, Examples, Out, Perma } from '$lib'
   import { decompress, perm, unperm } from '$lib/ffl'
+  import { source } from 'sveltekit-sse'
 
   let href = $state('')
   let code = $state('')
@@ -31,33 +31,30 @@
     out = '[scline: loading...]'
 
     const xs = await perm([header, code, inp], '~')
-    src = source(`/run/${xs}`)
-    src
-      .onError(() => {
+    src = source(`/run/${xs}`, {
+      error: stop,
+    })
+
+    let fst = true
+    const unsub = src.select('msg').subscribe(async (e) => {
+      if (fst) {
+        out = ''
+        fst = false
+      }
+      if (force) {
+        force = false
+        unsub()
+      }
+
+      const [x, m] = JSON.parse(e)
+      if (x < 0) {
         stop()
-      })
-      .transform(async (stream) => {
-        let fst = true
-        for await (const e of stream) {
-          if (fst) {
-            out = ''
-            fst = false
-          }
-          if (force) {
-            force = false
-            break
-          }
+        unsub()
+      }
 
-          const [x, m] = JSON.parse(e)
-          if (x < 0) {
-            stop()
-            break
-          }
-
-          const o = await decompress(m)
-          out += o
-        }
-      })
+      const o = await decompress(m)
+      out += o
+    })
   }
 
   const permalink = async () => {
