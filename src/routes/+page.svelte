@@ -157,7 +157,7 @@
 
       {:else if tab === 'exs'}
         <Examples
-          code={x => header = x}
+          code={x => code = x}
           header={x => header = x}
           out={x => out = x}
         />

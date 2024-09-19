@@ -6,7 +6,7 @@
   "description": "",
   "license": "MIT",
   "scripts": {
-    "dev": "vite --port=3000",
+    "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "start": "node build",
