@@ -1,35 +1,33 @@
 <script lang='ts'>
-  import { onMount } from 'svelte'
+  import { source } from 'sveltekit-sse'
   import { About, Brand, Button, Code, Examples, Out, Perma } from '$lib'
   import { decompress, perm, unperm } from '$lib/ffl'
 
-  import { source } from 'sveltekit-sse'
+  let href = $state('')
+  let code = $state('')
+  let header = $state('')
+  let inp = $state('')
+  let bytes = $state(0)
 
-  let href = ''
-  let code = ''
-  let header = ''
-  let inp = ''
-  let bytes = 0
+  let out = $state('')
 
-  let out = ''
-
-  let state = 'out'
-  $: {
+  let tab = $state('out')
+  $effect(() => {
     ((_) => {})([code, header, inp])
-    state = 'out'
-  }
+    tab = 'out'
+  })
 
-  let src
+  let src = $state<ReturnType<typeof source> | false>()
   let force = false
-  $: stop = () => {
-    if (src) {
-      src.close()
-      src = false
-    }
+  const stop = () => {
+    if (!src)
+      return
+    src.close()
+    src = false
   }
 
   const run = async () => {
-    state = 'out'
+    tab = 'out'
     out = '[scline: loading...]'
 
     const xs = await perm([header, code, inp], '~')
@@ -49,11 +47,13 @@
             force = false
             break
           }
+
           const [x, m] = JSON.parse(e)
           if (x < 0) {
             stop()
             break
           }
+
           const o = await decompress(m)
           out += o
         }
@@ -64,22 +64,25 @@
     const l = await perm([header, code, inp])
     history.pushState({}, '', l)
     href = location.href
-    state = 'perma'
+    tab = 'perma'
   }
 
   const abt = () => {
-    state = 'abt'
+    tab = 'abt'
   }
 
   const examples = () => {
-    state = 'exs'
+    tab = 'exs'
   }
 
-  onMount(async () => {
+  $effect(() => {
     const { hash } = location
-    if (hash.startsWith('#')) {
+    if (!hash.startsWith('#'))
+      return
+
+    (async () => {
       [header, code, inp] = await unperm(hash)
-    }
+    })()
   })
 </script>
 
@@ -149,13 +152,13 @@
     </div>
 
     <div>
-      {#if state === 'perma'}
+      {#if tab === 'perma'}
         <Perma {bytes} {code} {href} />
 
-      {:else if state === 'exs'}
+      {:else if tab === 'exs'}
         <Examples bind:header bind:code bind:out />
 
-      {:else if state === 'abt'}
+      {:else if tab === 'abt'}
         <About />
 
       {:else}
