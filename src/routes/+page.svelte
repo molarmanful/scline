@@ -1,4 +1,5 @@
 <script lang='ts'>
+  import { pushState } from '$app/navigation'
   import { About, Brand, Button, Code, Examples, Out, Perma } from '$lib'
   import { decompress, perm, unperm } from '$lib/ffl'
   import { source } from 'sveltekit-sse'
@@ -48,6 +49,7 @@
         return
       }
 
+      console.log(e)
       const [x, m] = JSON.parse(e)
       if (x < 0) {
         unsub()
@@ -62,7 +64,7 @@
 
   const permalink = async () => {
     const l = await perm([header, code, inp])
-    history.pushState({}, '', l)
+    pushState(l, {})
     href = location.href
     tab = 'perma'
   }
