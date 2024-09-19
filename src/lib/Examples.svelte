@@ -2,15 +2,15 @@
   import { Button } from '.'
 
   interface Props {
-    header: string
-    code: string
-    out: string
+    header: (header: string) => void
+    code: (code: string) => void
+    out: (out: string) => void
   }
 
-  let {
-    header = $bindable(),
-    code = $bindable(),
-    out = $bindable(),
+  const {
+    header = () => {},
+    code = () => {},
+    out = () => {},
   }: Props = $props()
 
   const exs = import.meta.glob<string>('../examples/*.sclin', {
@@ -24,10 +24,10 @@
   {#each Object.entries(exs) as [k, v]}
     <div>
       <Button
-        on:click={() => {
-          header = ''
-          code = v
-          out = ''
+        onclick={() => {
+          header('')
+          code(v)
+          out('')
         }}
       >
         {k.match(/\/([^/]+)\.sclin$/)?.[1]}

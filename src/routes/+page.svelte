@@ -87,7 +87,7 @@
 </script>
 
 <svelte:window
-  on:keydown={(e) => {
+  onkeydown={(e) => {
     switch (e.key) {
       case 'Enter':
         if (!e.ctrlKey)
@@ -111,7 +111,7 @@
     <div class='mb-4 flex gap-4'>
       {#if src}
         <Button
-          on:click={() => {
+          onclick={() => {
             force = true
             stop()
           }}
@@ -119,17 +119,17 @@
           <i class='i-ic-outline-stop'></i> stop
         </Button>
       {:else}
-        <Button on:click={run}>
+        <Button onclick={run}>
           <i class='i-ic-outline-play-arrow'></i> run
         </Button>
       {/if}
-      <Button on:click={permalink}>
+      <Button onclick={permalink}>
         <i class='i-ic-outline-link'></i> link
       </Button>
-      <Button on:click={examples}>
+      <Button onclick={examples}>
         <i class='i-ic-outline-featured-play-list'></i> examples
       </Button>
-      <Button on:click={abt}>
+      <Button onclick={abt}>
         <i class='i-ic-outline-info'></i> about
       </Button>
     </div>
@@ -156,7 +156,11 @@
         <Perma {bytes} {code} {href} />
 
       {:else if tab === 'exs'}
-        <Examples bind:header bind:code bind:out />
+        <Examples
+          code={x => header = x}
+          header={x => header = x}
+          out={x => out = x}
+        />
 
       {:else if tab === 'abt'}
         <About />
