@@ -15,8 +15,6 @@
     >.
   </p>
   <p>
-    Made with ♥ by Ben Pang (<A href='https://github.com/molarmanful'
-    >@molarmanful</A
-    >).
+    Made with ♥ by Ben Pang (<A href='https://github.com/molarmanful'>@molarmanful</A>).
   </p>
 </div>

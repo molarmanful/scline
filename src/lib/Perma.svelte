@@ -10,17 +10,17 @@
     s.removeAllRanges()
     s.addRange(r)
 
-    navigator.clipboard.writeText(target.innerText)
+    navigator.clipboard.writeText(target.textContent)
   }
 </script>
 
-<div panel {...$$restProps}>
+<div data-panel {...$$restProps}>
   <h2>url</h2>
-  <p><button reset on:click|preventDefault={copy}><pre>{href}</pre></button></p>
+  <div data-p><button data-reset on:click|preventDefault={copy}><pre>{href}</pre></button></div>
   <br />
   <h2>golf</h2>
-  <p>
-    <button reset on:click|preventDefault={copy}>
+  <div data-p>
+    <button data-reset on:click|preventDefault={copy}>
       <pre>
 # [sclin](https://github.com/molarmanful/sclin), {bytes} bytes
 
@@ -30,10 +30,10 @@
 
 [Try it on scline!]({href})</pre>
     </button>
-  </p>
+  </div>
 </div>
 
-<style lang='postcss'>
+<style>
   button {
     @apply bg-transparent text-(inherit left) cursor-copy;
   }

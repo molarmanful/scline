@@ -27,7 +27,8 @@ h2 {
   @apply text-(gray-300 3xl);
 }
 
-p {
+p,
+[data-p] {
   @apply m-(b-4 l-2) hyphens-auto;
 }
 

@@ -1,19 +1,3 @@
-<h1><span a>sc</span>lin<span b>e</span></h1>
-
-<style lang='postcss'>
-  h1 {
-    @apply inline-block;
-
-    span {
-      @apply transition-color-400;
-    }
-
-    &:not(:hover) [b] {
-      @apply text-gray-500;
-    }
-
-    &:hover [a] {
-      @apply text-gray-500;
-    }
-  }
-</style>
+<h1 class='inline-block [&:hover>[data-a]]:text-gray-500 [&:not(:hover)>[data-b]]:text-gray-500 [&>span]:transition-color-400'>
+  <span data-a>sc</span>lin<span data-b>e</span>
+</h1>
