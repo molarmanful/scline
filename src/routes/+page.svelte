@@ -44,12 +44,14 @@
       if (force) {
         force = false
         unsub()
+        return
       }
 
       const [x, m] = JSON.parse(e)
       if (x < 0) {
         stop()
         unsub()
+        return
       }
 
       const o = await decompress(m)
