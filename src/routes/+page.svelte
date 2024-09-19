@@ -44,13 +44,14 @@
       if (force) {
         force = false
         unsub()
+        stop()
         return
       }
 
       const [x, m] = JSON.parse(e)
       if (x < 0) {
-        stop()
         unsub()
+        stop()
         return
       }
 
