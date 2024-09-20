@@ -50,12 +50,12 @@
 
     let fst = true
     unsub = src.select('msg').subscribe(async (e) => {
+      if (!e)
+        return
       if (fst) {
         out = ''
         fst = false
       }
-      if (!e)
-        return
 
       const [x, m] = JSON.parse(e)
       if (x < 0) {
