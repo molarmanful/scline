@@ -81,6 +81,9 @@ importers:
       typescript-eslint:
         specifier: ^8.6.0
         version: 8.6.0(eslint@9.10.0(jiti@1.21.6))(typescript@5.6.2)
+      uint8array-extras:
+        specifier: ^1.4.0
+        version: 1.4.0
 
 packages:
 
@@ -2392,6 +2395,10 @@ packages:
 
   uint8-to-base64@0.2.0:
     resolution: {integrity: sha512-r13jrghEYZAN99GeYpEjM107DOxqB65enskpwce8rRHVAGEtaWmsF5GqoGdPMf8DIXc9XyAJTdvlvRZi4LsszA==}
+
+  uint8array-extras@1.4.0:
+    resolution: {integrity: sha512-ZPtzy0hu4cZjv3z5NW9gfKnNLjoz4y6uv4HlelAjDK7sY/xOkKZv9xK/WQpcsBB3jEybChz9DPC2U/+cusjJVQ==}
+    engines: {node: '>=18'}
 
   unconfig@0.5.5:
     resolution: {integrity: sha512-VQZ5PT9HDX+qag0XdgQi8tJepPhXiR/yVOkn707gJDKo31lGjRilPREiQJ9Z6zd/Ugpv6ZvO5VxVIcatldYcNQ==}
@@ -5051,6 +5058,8 @@ snapshots:
   ufo@1.5.4: {}
 
   uint8-to-base64@0.2.0: {}
+
+  uint8array-extras@1.4.0: {}
 
   unconfig@0.5.5:
     dependencies:
