@@ -1,5 +1,12 @@
-<script>
-  export let href
+<script lang='ts'>
+  import type { Snippet } from 'svelte'
+  import type { HTMLAnchorAttributes } from 'svelte/elements'
+
+  interface Props extends HTMLAnchorAttributes {
+    children: Snippet
+  }
+
+  const { children, ...rest }: Props = $props()
 </script>
 
-<a {href} target='_blank'><slot /></a>
+<a target='_blank' {...rest}>{@render children()}</a>
